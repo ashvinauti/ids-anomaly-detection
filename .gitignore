@@ -1,0 +1,12 @@
+# Dataset files are downloaded locally and never committed.
+data/
+
+# Trained models are large binary files; rebuild them with train.py.
+models/*
+!models/.gitkeep
+
+# Python and tooling clutter
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
