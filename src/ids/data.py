@@ -86,7 +86,8 @@ def load_nsl_kdd(path: Path | str) -> pd.DataFrame:
     path = Path(path)
     if not path.exists():
         raise FileNotFoundError(
-            f"Dataset file not found: {path}. Download NSL-KDD into the data/ folder first."
+            f"Dataset file not found: {path}. Download NSL-KDD into the data/ folder "
+            "first (run: python download_data.py)."
         )
 
     df = pd.read_csv(path, header=None, names=RAW_COLUMNS)

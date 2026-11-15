@@ -98,30 +98,63 @@ Three further findings stand out:
 
 ## How to run
 
-Requires Python 3.12. The commands below are for Windows; on macOS or Linux use `source .venv/bin/activate`.
+Tested on Windows 11 with Python 3.12 and 3.13. It uses only standard, pinned packages, so it should also work on macOS and Linux, but I have not tested those systems.
+
+**1. Get the code and create a virtual environment**
 
 ```bash
+git clone https://github.com/ashvinauti/ids-anomaly-detection.git
+cd ids-anomaly-detection
 python -m venv .venv
+```
+
+Activate it. On Windows:
+
+```bash
 .venv\Scripts\activate
-pip install -r requirements.txt
 ```
 
-Download the dataset into `data/`. The official page for NSL-KDD (https://www.unb.ca/cic/datasets/nsl.html) states that the dataset is no longer available there. The licence on that page allows mirroring with citation, and I used the public mirror at https://github.com/Jehuty4949/NSL_KDD:
+On macOS or Linux (where the command may be `python3` instead of `python`):
 
 ```bash
-curl -L -o data/KDDTrain+.txt https://raw.githubusercontent.com/Jehuty4949/NSL_KDD/master/KDDTrain+.txt
-curl -L -o data/KDDTest+.txt https://raw.githubusercontent.com/Jehuty4949/NSL_KDD/master/KDDTest+.txt
+source .venv/bin/activate
 ```
 
-Then run:
+If PowerShell refuses to run the activation script, use Command Prompt instead, or skip activation and type `.venv\Scripts\python` wherever these steps say `python`.
+
+**2. Install the pinned packages**
 
 ```bash
-pytest                                    # 56 unit tests
-python train.py --cv                      # train, evaluate, charts (about 7 minutes on my machine)
-python tune.py                            # grid search and before/after (about 7.5 minutes)
-python detect.py --limit 50 --delay 0.1   # simulated live feed with JSON alerts
-python detect.py --quiet                  # summary for the whole test file
+python -m pip install -r requirements.txt
 ```
+
+**3. Download the dataset**
+
+```bash
+python download_data.py
+```
+
+This creates `data/`, downloads `KDDTrain+.txt` and `KDDTest+.txt`, and checks each file's SHA-256 fingerprint against the copy my results came from. The official NSL-KDD page (https://www.unb.ca/cic/datasets/nsl.html) states that the dataset is no longer available there. Its licence allows mirroring with citation, so the script downloads from the public mirror at https://github.com/Jehuty4949/NSL_KDD.
+
+**4. Run the tests, then the experiments**
+
+```bash
+python -m pytest
+python train.py --cv
+python tune.py
+python detect.py --limit 50 --delay 0.1
+python detect.py --quiet
+```
+
+What each command does:
+
+- `python -m pytest` runs the unit tests (seconds).
+- `python train.py --cv` trains, cross-validates, evaluates and draws the charts. It took about 7 minutes on my machine; drop `--cv` for about 2 minutes.
+- `python tune.py` runs the grid search and the before/after comparison (about 7.5 minutes).
+- `python detect.py --limit 50 --delay 0.1` replays 50 records as a simulated live feed and prints JSON alerts.
+- `python detect.py --quiet` prints only the summary for the whole test file (about 9 minutes).
+
+`train.py` and `tune.py` overwrite the files in `results/` with your own run. Seeds are fixed, so you should get the same numbers.
 
 The run times were measured on my Windows machine with 12 logical CPU cores.
 
@@ -135,12 +168,13 @@ src/ids/evaluate.py   metrics, per-category breakdown, charts
 train.py              trains and compares the three models, saves the best
 tune.py               grid search and before/after comparison
 detect.py             simulated live detection, JSON alerts, summary
+download_data.py      downloads and verifies the NSL-KDD files
 tests/                pytest unit tests
 results/              metrics, tuning results and charts from real runs
 docs/EXPLAINED.md     plain-English walkthrough and interview Q&A
 ```
 
-`data/` and `models/` are not committed. Run the commands above to recreate them.
+`download_data.py` fetches the dataset. `data/` and `models/` are not committed; the commands above recreate them.
 
 ## Limitations
 
@@ -162,9 +196,9 @@ docs/EXPLAINED.md     plain-English walkthrough and interview Q&A
 
 ## References
 
-- Tavallaee, M., Bagheri, E., Lu, W. and Ghorbani, A. A. (2009) 'A detailed analysis of the KDD CUP 99 data set', *Proceedings of the 2009 IEEE Symposium on Computational Intelligence for Security and Defense Applications (CISDA)*.
-- McHugh, J. (2000) 'Testing intrusion detection systems: a critique of the 1998 and 1999 DARPA intrusion detection system evaluations as performed by Lincoln Laboratory', *ACM Transactions on Information and System Security*, 3(4), pp. 262–294.
-- Pedregosa, F. et al. (2011) 'Scikit-learn: Machine learning in Python', *Journal of Machine Learning Research*, 12, pp. 2825–2830.
+- Tavallaee, M., Bagheri, E., Lu, W. and Ghorbani, A. A. (2009) 'A detailed analysis of the KDD CUP 99 data set', *Proceedings of the 2009 IEEE Symposium on Computational Intelligence for Security and Defense Applications (CISDA)*, Ottawa, pp. 1–6. doi: [10.1109/CISDA.2009.5356528](https://doi.org/10.1109/CISDA.2009.5356528).
+- McHugh, J. (2000) 'Testing intrusion detection systems: a critique of the 1998 and 1999 DARPA intrusion detection system evaluations as performed by Lincoln Laboratory', *ACM Transactions on Information and System Security*, 3(4), pp. 262–294. doi: [10.1145/382912.382923](https://doi.org/10.1145/382912.382923).
+- Pedregosa, F. et al. (2011) 'Scikit-learn: Machine learning in Python', *Journal of Machine Learning Research*, 12, pp. 2825–2830. Available at: https://jmlr.org/papers/v12/pedregosa11a.html.
 
 ## Licence
 
