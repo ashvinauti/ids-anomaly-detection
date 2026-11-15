@@ -1,0 +1,14 @@
+
+=== Summary ===
+{
+  "model": "neural_network",
+  "records_processed": 22544,
+  "alerts_raised": 9382,
+  "alert_rate": 0.4162,
+  "elapsed_seconds": 546.41,
+  "using_labels_in_file": {
+    "true_alerts": 8673,
+    "false_alarms": 709,
+    "missed_attacks": 4160
+  }
+}
