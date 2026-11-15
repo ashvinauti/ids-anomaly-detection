@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-15T18:38:15+00:00",
+  "generated_utc": "2026-11-15T18:48:07+00:00",
   "dataset": {
     "name": "NSL-KDD",
     "train_file": "KDDTrain+.txt",
@@ -29,8 +29,8 @@
       "false_positive_rate": 0.06878797240243023,
       "false_negative_rate": 0.3207356035221694,
       "training_rows": 125973,
-      "train_seconds": 122.9,
-      "predict_seconds": 0.18
+      "train_seconds": 79.39,
+      "predict_seconds": 0.05
     },
     "svm": {
       "tn": 9382,
@@ -44,8 +44,8 @@
       "false_positive_rate": 0.03387910616826279,
       "false_negative_rate": 0.37107457336554195,
       "training_rows": 20000,
-      "train_seconds": 7.19,
-      "predict_seconds": 5.2
+      "train_seconds": 4.49,
+      "predict_seconds": 1.94
     },
     "kmeans": {
       "tn": 8973,
@@ -59,8 +59,114 @@
       "false_positive_rate": 0.07599629286376275,
       "false_negative_rate": 0.6158341775111041,
       "training_rows": 125973,
-      "train_seconds": 2.69,
-      "predict_seconds": 0.08
+      "train_seconds": 2.4,
+      "predict_seconds": 0.06
+    }
+  },
+  "detection_by_category": {
+    "neural_network": {
+      "DoS": {
+        "records": 7460,
+        "detected": 6512,
+        "detection_rate": 0.8729222520107238
+      },
+      "Probe": {
+        "records": 2421,
+        "detected": 1775,
+        "detection_rate": 0.7331681123502685
+      },
+      "R2L": {
+        "records": 2885,
+        "detected": 400,
+        "detection_rate": 0.1386481802426343
+      },
+      "U2R": {
+        "records": 67,
+        "detected": 30,
+        "detection_rate": 0.44776119402985076
+      }
+    },
+    "svm": {
+      "DoS": {
+        "records": 7460,
+        "detected": 5909,
+        "detection_rate": 0.7920911528150134
+      },
+      "Probe": {
+        "records": 2421,
+        "detected": 1878,
+        "detection_rate": 0.7757125154894672
+      },
+      "R2L": {
+        "records": 2885,
+        "detected": 274,
+        "detection_rate": 0.0949740034662045
+      },
+      "U2R": {
+        "records": 67,
+        "detected": 10,
+        "detection_rate": 0.14925373134328357
+      }
+    },
+    "kmeans": {
+      "DoS": {
+        "records": 7460,
+        "detected": 1854,
+        "detection_rate": 0.2485254691689008
+      },
+      "Probe": {
+        "records": 2421,
+        "detected": 1960,
+        "detection_rate": 0.8095828170177612
+      },
+      "R2L": {
+        "records": 2885,
+        "detected": 1074,
+        "detection_rate": 0.3722703639514731
+      },
+      "U2R": {
+        "records": 67,
+        "detected": 42,
+        "detection_rate": 0.6268656716417911
+      }
+    }
+  },
+  "detection_seen_vs_unseen_attack_types": {
+    "neural_network": {
+      "seen_in_training": {
+        "records": 9083,
+        "detected": 6952,
+        "detection_rate": 0.7653858857205769
+      },
+      "unseen_in_training": {
+        "records": 3750,
+        "detected": 1765,
+        "detection_rate": 0.4706666666666667
+      }
+    },
+    "svm": {
+      "seen_in_training": {
+        "records": 9083,
+        "detected": 6878,
+        "detection_rate": 0.757238797754046
+      },
+      "unseen_in_training": {
+        "records": 3750,
+        "detected": 1193,
+        "detection_rate": 0.3181333333333333
+      }
+    },
+    "kmeans": {
+      "seen_in_training": {
+        "records": 9083,
+        "detected": 3838,
+        "detection_rate": 0.42254761642629085
+      },
+      "unseen_in_training": {
+        "records": 3750,
+        "detected": 1092,
+        "detection_rate": 0.2912
+      }
     }
   },
   "cross_validation": {
@@ -148,5 +254,5 @@
     "selected_by": "test-set F1",
     "file": "models/best_model.joblib"
   },
-  "total_run_seconds": 517.2
+  "total_run_seconds": 405.8
 }

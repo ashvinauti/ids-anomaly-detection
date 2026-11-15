@@ -18,6 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import joblib
+import numpy as np
 import pandas as pd
 import sklearn
 from sklearn.base import clone
@@ -28,7 +29,16 @@ from sklearn.pipeline import Pipeline
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 
 from ids.data import TEST_FILE, TRAIN_FILE, load_nsl_kdd, split_features_target  # noqa: E402
-from ids.evaluate import compute_metrics, pick_best_model, summarise_folds  # noqa: E402
+from ids.evaluate import (  # noqa: E402
+    compute_metrics,
+    detection_rate_by_category,
+    detection_rate_seen_vs_unseen,
+    pick_best_model,
+    plot_confusion_matrix,
+    plot_detection_by_category,
+    plot_error_rates,
+    summarise_folds,
+)
 from ids.models import (  # noqa: E402
     RANDOM_STATE,
     SVM_SAMPLE_SIZE,
@@ -53,8 +63,12 @@ def training_rows_for(name: str, X: pd.DataFrame, y: pd.Series,
 def fit_and_evaluate(name: str, pipeline: Pipeline,
                      X_train: pd.DataFrame, y_train: pd.Series,
                      X_test: pd.DataFrame, y_test: pd.Series,
-                     svm_sample_size: int) -> tuple[Pipeline, dict]:
-    """Fit one pipeline, score it on the test set, and record timings."""
+                     svm_sample_size: int) -> tuple[Pipeline, dict, np.ndarray]:
+    """Fit one pipeline, score it on the test set, and record timings.
+
+    Returns the fitted pipeline, its metrics, and its test-set predictions
+    (kept for the per-category breakdown and charts).
+    """
     X_fit, y_fit = training_rows_for(name, X_train, y_train, svm_sample_size)
 
     start = time.perf_counter()
@@ -71,7 +85,21 @@ def fit_and_evaluate(name: str, pipeline: Pipeline,
         "train_seconds": round(train_seconds, 2),
         "predict_seconds": round(predict_seconds, 2),
     })
-    return pipeline, metrics
+    return pipeline, metrics, y_pred
+
+
+def save_charts(test_results: dict[str, dict], by_category: dict[str, dict]) -> list[Path]:
+    """Write the confusion matrices, error-rate chart and category chart to results/."""
+    paths = []
+    for name, metrics in test_results.items():
+        path = RESULTS_DIR / f"confusion_matrix_{name}.png"
+        plot_confusion_matrix(metrics, name, path)
+        paths.append(path)
+    paths.append(RESULTS_DIR / "error_rates.png")
+    plot_error_rates(test_results, paths[-1])
+    paths.append(RESULTS_DIR / "detection_by_category.png")
+    plot_detection_by_category(by_category, paths[-1])
+    return paths
 
 
 def cross_validate(name: str, pipeline: Pipeline, X: pd.DataFrame, y: pd.Series,
@@ -129,6 +157,9 @@ def main() -> None:
     test_results: dict[str, dict] = {}
     cv_results: dict[str, dict] | None = {} if args.cv else None
     fitted: dict[str, Pipeline] = {}
+    by_category: dict[str, dict] = {}
+    seen_vs_unseen: dict[str, dict] = {}
+    training_attack_names = set(train_df.loc[train_df["is_attack"] == 1, "attack_name"])
 
     for name, pipeline in build_all_models().items():
         if args.cv:
@@ -137,8 +168,11 @@ def main() -> None:
                                               args.cv_folds, args.svm_sample)
 
         print(f"\n[{name}] training on KDDTrain+, evaluating on KDDTest+")
-        fitted[name], test_results[name] = fit_and_evaluate(
+        fitted[name], test_results[name], y_pred = fit_and_evaluate(
             name, pipeline, X_train, y_train, X_test, y_test, args.svm_sample)
+        by_category[name] = detection_rate_by_category(test_df["attack_category"], y_pred)
+        seen_vs_unseen[name] = detection_rate_seen_vs_unseen(
+            test_df["attack_name"], y_pred, training_attack_names)
         m = test_results[name]
         print(f"  F1 = {m['f1']:.4f}  (trained on {m['training_rows']} rows "
               f"in {m['train_seconds']} s)")
@@ -166,6 +200,8 @@ def main() -> None:
             "scikit_learn": sklearn.__version__,
         },
         "test_set": test_results,
+        "detection_by_category": by_category,
+        "detection_seen_vs_unseen_attack_types": seen_vs_unseen,
         "cross_validation": cv_results if args.cv else "not yet measured",
         "best_model": {"name": best, "selected_by": "test-set F1",
                        "file": f"models/{BEST_MODEL_FILE.name}"},
@@ -173,6 +209,7 @@ def main() -> None:
     }
     RESULTS_DIR.mkdir(exist_ok=True)
     METRICS_FILE.write_text(json.dumps(report, indent=2))
+    chart_paths = save_charts(test_results, by_category)
 
     print("\nTest-set results (KDDTest+):")
     print_results_table(test_results)
@@ -181,6 +218,14 @@ def main() -> None:
         print("\nCross-validation F1 on KDDTrain+ (mean +/- std):")
         for name, summary in cv_results.items():
             print(f"  {name:<16}{summary['f1']['mean']:.4f} +/- {summary['f1']['std']:.4f}")
+    print("\nDetection rate by attack category (KDDTest+):")
+    print(f"  {'model':<16}" + "".join(f"{c:>8}" for c in by_category[best])
+          + f"{'unseen':>9}")
+    for name, cats in by_category.items():
+        unseen = seen_vs_unseen[name]["unseen_in_training"]["detection_rate"]
+        print(f"  {name:<16}" + "".join(f"{v['detection_rate']:>8.4f}" for v in cats.values())
+              + f"{unseen:>9.4f}")
+    print(f"\nCharts saved: {', '.join(p.name for p in chart_paths)}")
     print(f"\nBest model by F1: {best}  -> saved to {BEST_MODEL_FILE}")
     print(f"Metrics written to {METRICS_FILE}")
     print(f"Total run time: {report['total_run_seconds']} s")
