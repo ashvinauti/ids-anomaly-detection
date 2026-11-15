@@ -1,0 +1,501 @@
+{
+  "models": {
+    "neural_network": {
+      "search_rows": 30000,
+      "training_rows": 125973,
+      "grid": {
+        "hidden_layer_sizes": [
+          [
+            64,
+            32
+          ],
+          [
+            128,
+            64
+          ]
+        ],
+        "alpha": [
+          0.0001,
+          0.001
+        ],
+        "learning_rate_init": [
+          0.001,
+          0.01
+        ]
+      },
+      "best_params": {
+        "alpha": 0.001,
+        "hidden_layer_sizes": [
+          128,
+          64
+        ],
+        "learning_rate_init": 0.01
+      },
+      "best_cv_f1": 0.9933305631886583,
+      "search_seconds": 75.9,
+      "all_settings": [
+        {
+          "params": {
+            "alpha": 0.0001,
+            "hidden_layer_sizes": [
+              64,
+              32
+            ],
+            "learning_rate_init": 0.001
+          },
+          "cv_f1": 0.9921,
+          "cv_recall": 0.9926,
+          "cv_false_positive_rate": 0.0073
+        },
+        {
+          "params": {
+            "alpha": 0.0001,
+            "hidden_layer_sizes": [
+              64,
+              32
+            ],
+            "learning_rate_init": 0.01
+          },
+          "cv_f1": 0.9925,
+          "cv_recall": 0.9928,
+          "cv_false_positive_rate": 0.0068
+        },
+        {
+          "params": {
+            "alpha": 0.0001,
+            "hidden_layer_sizes": [
+              128,
+              64
+            ],
+            "learning_rate_init": 0.001
+          },
+          "cv_f1": 0.9924,
+          "cv_recall": 0.9908,
+          "cv_false_positive_rate": 0.0052
+        },
+        {
+          "params": {
+            "alpha": 0.0001,
+            "hidden_layer_sizes": [
+              128,
+              64
+            ],
+            "learning_rate_init": 0.01
+          },
+          "cv_f1": 0.9921,
+          "cv_recall": 0.9921,
+          "cv_false_positive_rate": 0.0069
+        },
+        {
+          "params": {
+            "alpha": 0.001,
+            "hidden_layer_sizes": [
+              64,
+              32
+            ],
+            "learning_rate_init": 0.001
+          },
+          "cv_f1": 0.992,
+          "cv_recall": 0.9926,
+          "cv_false_positive_rate": 0.0075
+        },
+        {
+          "params": {
+            "alpha": 0.001,
+            "hidden_layer_sizes": [
+              64,
+              32
+            ],
+            "learning_rate_init": 0.01
+          },
+          "cv_f1": 0.9908,
+          "cv_recall": 0.9888,
+          "cv_false_positive_rate": 0.0061
+        },
+        {
+          "params": {
+            "alpha": 0.001,
+            "hidden_layer_sizes": [
+              128,
+              64
+            ],
+            "learning_rate_init": 0.001
+          },
+          "cv_f1": 0.9926,
+          "cv_recall": 0.9914,
+          "cv_false_positive_rate": 0.0054
+        },
+        {
+          "params": {
+            "alpha": 0.001,
+            "hidden_layer_sizes": [
+              128,
+              64
+            ],
+            "learning_rate_init": 0.01
+          },
+          "cv_f1": 0.9933,
+          "cv_recall": 0.9922,
+          "cv_false_positive_rate": 0.0048
+        }
+      ],
+      "test_before": {
+        "tn": 9043,
+        "fp": 668,
+        "fn": 4116,
+        "tp": 8717,
+        "accuracy": 0.7877927608232789,
+        "precision": 0.928822589238146,
+        "recall": 0.6792643964778305,
+        "f1": 0.7846790890269151,
+        "false_positive_rate": 0.06878797240243023,
+        "false_negative_rate": 0.3207356035221694
+      },
+      "test_after": {
+        "tn": 9002,
+        "fp": 709,
+        "fn": 4160,
+        "tp": 8673,
+        "accuracy": 0.7840223562810504,
+        "precision": 0.9244297591131955,
+        "recall": 0.6758357359931427,
+        "f1": 0.7808237677245105,
+        "false_positive_rate": 0.07300998867263928,
+        "false_negative_rate": 0.32416426400685733
+      }
+    },
+    "svm": {
+      "search_rows": 20000,
+      "training_rows": 20000,
+      "grid": {
+        "C": [
+          1,
+          10,
+          100
+        ],
+        "gamma": [
+          "scale",
+          0.01,
+          0.1
+        ]
+      },
+      "best_params": {
+        "C": 10,
+        "gamma": 0.1
+      },
+      "best_cv_f1": 0.9943524318185187,
+      "search_seconds": 40.6,
+      "all_settings": [
+        {
+          "params": {
+            "C": 1,
+            "gamma": "scale"
+          },
+          "cv_f1": 0.9886,
+          "cv_recall": 0.9895,
+          "cv_false_positive_rate": 0.0107
+        },
+        {
+          "params": {
+            "C": 1,
+            "gamma": 0.01
+          },
+          "cv_f1": 0.9828,
+          "cv_recall": 0.9785,
+          "cv_false_positive_rate": 0.011
+        },
+        {
+          "params": {
+            "C": 1,
+            "gamma": 0.1
+          },
+          "cv_f1": 0.9913,
+          "cv_recall": 0.9891,
+          "cv_false_positive_rate": 0.0057
+        },
+        {
+          "params": {
+            "C": 10,
+            "gamma": "scale"
+          },
+          "cv_f1": 0.9917,
+          "cv_recall": 0.9919,
+          "cv_false_positive_rate": 0.0074
+        },
+        {
+          "params": {
+            "C": 10,
+            "gamma": 0.01
+          },
+          "cv_f1": 0.9894,
+          "cv_recall": 0.9917,
+          "cv_false_positive_rate": 0.0112
+        },
+        {
+          "params": {
+            "C": 10,
+            "gamma": 0.1
+          },
+          "cv_f1": 0.9944,
+          "cv_recall": 0.9932,
+          "cv_false_positive_rate": 0.0039
+        },
+        {
+          "params": {
+            "C": 100,
+            "gamma": "scale"
+          },
+          "cv_f1": 0.994,
+          "cv_recall": 0.9939,
+          "cv_false_positive_rate": 0.0051
+        },
+        {
+          "params": {
+            "C": 100,
+            "gamma": 0.01
+          },
+          "cv_f1": 0.9924,
+          "cv_recall": 0.9922,
+          "cv_false_positive_rate": 0.0065
+        },
+        {
+          "params": {
+            "C": 100,
+            "gamma": 0.1
+          },
+          "cv_f1": 0.9942,
+          "cv_recall": 0.9934,
+          "cv_false_positive_rate": 0.0043
+        }
+      ],
+      "test_before": {
+        "tn": 9382,
+        "fp": 329,
+        "fn": 4762,
+        "tp": 8071,
+        "accuracy": 0.7741749467707594,
+        "precision": 0.9608333333333333,
+        "recall": 0.628925426634458,
+        "f1": 0.7602317147835915,
+        "false_positive_rate": 0.03387910616826279,
+        "false_negative_rate": 0.37107457336554195
+      },
+      "test_after": {
+        "tn": 9454,
+        "fp": 257,
+        "fn": 5486,
+        "tp": 7347,
+        "accuracy": 0.7452537260468417,
+        "precision": 0.9662019989479221,
+        "recall": 0.5725083768409569,
+        "f1": 0.7189900670352791,
+        "false_positive_rate": 0.026464833693749357,
+        "false_negative_rate": 0.4274916231590431
+      }
+    },
+    "kmeans": {
+      "search_rows": 125973,
+      "training_rows": 125973,
+      "grid": {
+        "n_clusters": [
+          4,
+          8,
+          16,
+          32
+        ],
+        "percentile": [
+          90,
+          95,
+          97.5,
+          99
+        ]
+      },
+      "best_params": {
+        "n_clusters": 32,
+        "percentile": 97.5
+      },
+      "best_cv_f1": 0.9426296652338636,
+      "search_seconds": 102.0,
+      "all_settings": [
+        {
+          "params": {
+            "n_clusters": 4,
+            "percentile": 90
+          },
+          "cv_f1": 0.8993,
+          "cv_recall": 0.9108,
+          "cv_false_positive_rate": 0.0998
+        },
+        {
+          "params": {
+            "n_clusters": 4,
+            "percentile": 95
+          },
+          "cv_f1": 0.4738,
+          "cv_recall": 0.3304,
+          "cv_false_positive_rate": 0.0504
+        },
+        {
+          "params": {
+            "n_clusters": 4,
+            "percentile": 97.5
+          },
+          "cv_f1": 0.1993,
+          "cv_recall": 0.1141,
+          "cv_false_positive_rate": 0.0254
+        },
+        {
+          "params": {
+            "n_clusters": 4,
+            "percentile": 99
+          },
+          "cv_f1": 0.0479,
+          "cv_recall": 0.0251,
+          "cv_false_positive_rate": 0.0097
+        },
+        {
+          "params": {
+            "n_clusters": 8,
+            "percentile": 90
+          },
+          "cv_f1": 0.9141,
+          "cv_recall": 0.939,
+          "cv_false_positive_rate": 0.1006
+        },
+        {
+          "params": {
+            "n_clusters": 8,
+            "percentile": 95
+          },
+          "cv_f1": 0.8512,
+          "cv_recall": 0.7841,
+          "cv_false_positive_rate": 0.0504
+        },
+        {
+          "params": {
+            "n_clusters": 8,
+            "percentile": 97.5
+          },
+          "cv_f1": 0.3041,
+          "cv_recall": 0.1847,
+          "cv_false_positive_rate": 0.0254
+        },
+        {
+          "params": {
+            "n_clusters": 8,
+            "percentile": 99
+          },
+          "cv_f1": 0.1139,
+          "cv_recall": 0.0611,
+          "cv_false_positive_rate": 0.01
+        },
+        {
+          "params": {
+            "n_clusters": 16,
+            "percentile": 90
+          },
+          "cv_f1": 0.9215,
+          "cv_recall": 0.9529,
+          "cv_false_positive_rate": 0.1004
+        },
+        {
+          "params": {
+            "n_clusters": 16,
+            "percentile": 95
+          },
+          "cv_f1": 0.8995,
+          "cv_recall": 0.8655,
+          "cv_false_positive_rate": 0.0504
+        },
+        {
+          "params": {
+            "n_clusters": 16,
+            "percentile": 97.5
+          },
+          "cv_f1": 0.659,
+          "cv_recall": 0.5195,
+          "cv_false_positive_rate": 0.0257
+        },
+        {
+          "params": {
+            "n_clusters": 16,
+            "percentile": 99
+          },
+          "cv_f1": 0.1577,
+          "cv_recall": 0.0874,
+          "cv_false_positive_rate": 0.011
+        },
+        {
+          "params": {
+            "n_clusters": 32,
+            "percentile": 90
+          },
+          "cv_f1": 0.9257,
+          "cv_recall": 0.9604,
+          "cv_false_positive_rate": 0.0998
+        },
+        {
+          "params": {
+            "n_clusters": 32,
+            "percentile": 95
+          },
+          "cv_f1": 0.942,
+          "cv_recall": 0.9423,
+          "cv_false_positive_rate": 0.0509
+        },
+        {
+          "params": {
+            "n_clusters": 32,
+            "percentile": 97.5
+          },
+          "cv_f1": 0.9426,
+          "cv_recall": 0.9175,
+          "cv_false_positive_rate": 0.0254
+        },
+        {
+          "params": {
+            "n_clusters": 32,
+            "percentile": 99
+          },
+          "cv_f1": 0.7699,
+          "cv_recall": 0.6462,
+          "cv_false_positive_rate": 0.0101
+        }
+      ],
+      "test_before": {
+        "tn": 8973,
+        "fp": 738,
+        "fn": 7903,
+        "tp": 4930,
+        "accuracy": 0.6167051100070973,
+        "precision": 0.8697953422724065,
+        "recall": 0.3841658224888958,
+        "f1": 0.5329441651802606,
+        "false_positive_rate": 0.07599629286376275,
+        "false_negative_rate": 0.6158341775111041
+      },
+      "test_after": {
+        "tn": 9114,
+        "fp": 597,
+        "fn": 4291,
+        "tp": 8542,
+        "accuracy": 0.783179559971611,
+        "precision": 0.9346755662545136,
+        "recall": 0.6656276786410037,
+        "f1": 0.7775350446022209,
+        "false_positive_rate": 0.06147667593450726,
+        "false_negative_rate": 0.33437232135899636
+      }
+    }
+  },
+  "generated_utc": "2026-11-15T18:56:47+00:00",
+  "cv_folds": 3,
+  "random_state": 42,
+  "selection": "settings chosen by mean CV F1 on KDDTrain+; test set used only to report",
+  "best_tuned_model": {
+    "name": "neural_network",
+    "selected_by": "test-set F1",
+    "file": "models/best_model.joblib"
+  },
+  "total_run_seconds": 441.1
+}

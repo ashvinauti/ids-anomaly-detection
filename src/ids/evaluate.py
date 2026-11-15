@@ -234,3 +234,57 @@ def plot_detection_by_category(by_model: dict[str, dict[str, dict]], path: Path)
     fig.tight_layout()
     fig.savefig(path, dpi=150)
     plt.close(fig)
+
+
+def plot_before_after(before: dict[str, dict], after: dict[str, dict], path: Path) -> None:
+    """Save three small panels (F1, false positive rate, false negative rate)
+    comparing each model's test-set result before and after tuning.
+
+    Neutral greys are used here so they are not confused with the model colours.
+    """
+    panels = [("f1", "F1 (higher is better)"),
+              ("false_positive_rate", "False positive rate (lower is better)"),
+              ("false_negative_rate", "False negative rate (lower is better)")]
+    models = list(after)
+    x = np.arange(len(models))
+    fig, axes = plt.subplots(1, 3, figsize=(11, 3.8), sharey=True)
+    for ax, (key, title) in zip(axes, panels):
+        for offset, data, colour, label in ((-0.2, before, "#c3c2b7", "Before tuning"),
+                                            (0.2, after, "#52514e", "After tuning")):
+            values = [data[m][key] for m in models]
+            bars = ax.bar(x + offset, values, width=0.37, color=colour, label=label)
+            ax.bar_label(bars, labels=[f"{v:.1%}" for v in values], fontsize=7.5,
+                         color=TEXT_COLOUR, padding=2)
+        ax.set_xticks(x, labels=[MODEL_LABELS.get(m, m) for m in models])
+        ax.set_title(title, fontsize=9.5)
+        _style_axes(ax)
+        ax.set_ylim(0, 1.08)
+        ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
+    axes[0].legend(frameon=False, fontsize=8.5, loc="upper right")
+    fig.suptitle("Effect of tuning on KDDTest+", fontsize=10.5)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def plot_kmeans_sweep(f1_grid: np.ndarray, n_clusters: list[int],
+                      percentiles: list[float], path: Path) -> None:
+    """Save a heatmap of cross-validated F1 for each (clusters, percentile) pair."""
+    fig, ax = plt.subplots(figsize=(5.8, 3.8))
+    ax.imshow(f1_grid, cmap="Blues", vmin=0, vmax=1, aspect="auto")
+    for i in range(f1_grid.shape[0]):
+        for j in range(f1_grid.shape[1]):
+            colour = "white" if f1_grid[i, j] > 0.6 else "#0b0b0b"
+            ax.text(j, i, f"{f1_grid[i, j]:.3f}", ha="center", va="center",
+                    color=colour, fontsize=9)
+    ax.set_xticks(range(len(percentiles)), labels=[f"{p:g}th" for p in percentiles])
+    ax.set_yticks(range(len(n_clusters)), labels=[str(k) for k in n_clusters])
+    ax.set_xlabel("Threshold percentile", color=TEXT_COLOUR)
+    ax.set_ylabel("Number of clusters", color=TEXT_COLOUR)
+    ax.tick_params(length=0, colors=TEXT_COLOUR)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+    ax.set_title("K-Means sweep: 3-fold CV F1 on KDDTrain+", fontsize=10)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)

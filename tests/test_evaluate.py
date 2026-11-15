@@ -1,6 +1,7 @@
 """Tests for src/ids/evaluate.py, using small cases worked out by hand."""
 
 import pytest
+import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
 from ids.evaluate import (
@@ -9,9 +10,11 @@ from ids.evaluate import (
     detection_rate_by_category,
     detection_rate_seen_vs_unseen,
     pick_best_model,
+    plot_before_after,
     plot_confusion_matrix,
     plot_detection_by_category,
     plot_error_rates,
+    plot_kmeans_sweep,
     summarise_folds,
 )
 
@@ -114,3 +117,11 @@ def test_charts_are_written(tmp_path):
     plot_detection_by_category(by_cat, tmp_path / "cat.png")
     for name in ("cm.png", "err.png", "cat.png"):
         assert (tmp_path / name).stat().st_size > 1000
+
+
+def test_tuning_charts_are_written(tmp_path):
+    m = compute_metrics(Y_TRUE, Y_PRED)
+    plot_before_after({"svm": m}, {"svm": m}, tmp_path / "ba.png")
+    plot_kmeans_sweep(np.array([[0.5, 0.6], [0.7, 0.8]]), [4, 8], [90, 95], tmp_path / "sw.png")
+    assert (tmp_path / "ba.png").stat().st_size > 1000
+    assert (tmp_path / "sw.png").stat().st_size > 1000
