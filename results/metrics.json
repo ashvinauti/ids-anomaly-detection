@@ -1,0 +1,152 @@
+{
+  "generated_utc": "2026-11-15T18:38:15+00:00",
+  "dataset": {
+    "name": "NSL-KDD",
+    "train_file": "KDDTrain+.txt",
+    "train_rows": 125973,
+    "test_file": "KDDTest+.txt",
+    "test_rows": 22544
+  },
+  "settings": {
+    "random_state": 42,
+    "svm_sample_size": 20000,
+    "cv_folds": 5
+  },
+  "environment": {
+    "python": "3.12.10",
+    "scikit_learn": "1.9.1"
+  },
+  "test_set": {
+    "neural_network": {
+      "tn": 9043,
+      "fp": 668,
+      "fn": 4116,
+      "tp": 8717,
+      "accuracy": 0.7877927608232789,
+      "precision": 0.928822589238146,
+      "recall": 0.6792643964778305,
+      "f1": 0.7846790890269151,
+      "false_positive_rate": 0.06878797240243023,
+      "false_negative_rate": 0.3207356035221694,
+      "training_rows": 125973,
+      "train_seconds": 122.9,
+      "predict_seconds": 0.18
+    },
+    "svm": {
+      "tn": 9382,
+      "fp": 329,
+      "fn": 4762,
+      "tp": 8071,
+      "accuracy": 0.7741749467707594,
+      "precision": 0.9608333333333333,
+      "recall": 0.628925426634458,
+      "f1": 0.7602317147835915,
+      "false_positive_rate": 0.03387910616826279,
+      "false_negative_rate": 0.37107457336554195,
+      "training_rows": 20000,
+      "train_seconds": 7.19,
+      "predict_seconds": 5.2
+    },
+    "kmeans": {
+      "tn": 8973,
+      "fp": 738,
+      "fn": 7903,
+      "tp": 4930,
+      "accuracy": 0.6167051100070973,
+      "precision": 0.8697953422724065,
+      "recall": 0.3841658224888958,
+      "f1": 0.5329441651802606,
+      "false_positive_rate": 0.07599629286376275,
+      "false_negative_rate": 0.6158341775111041,
+      "training_rows": 125973,
+      "train_seconds": 2.69,
+      "predict_seconds": 0.08
+    }
+  },
+  "cross_validation": {
+    "neural_network": {
+      "accuracy": {
+        "mean": 0.9961182115846323,
+        "std": 0.0006407264514575257
+      },
+      "precision": {
+        "mean": 0.996313622008215,
+        "std": 0.0009085160681244094
+      },
+      "recall": {
+        "mean": 0.9953436807095344,
+        "std": 0.0014408126953397685
+      },
+      "f1": {
+        "mean": 0.995827436607529,
+        "std": 0.0006910472303528746
+      },
+      "false_positive_rate": {
+        "mean": 0.0032074554682023685,
+        "std": 0.000794644349060649
+      },
+      "false_negative_rate": {
+        "mean": 0.004656319290465632,
+        "std": 0.0014408126953397837
+      }
+    },
+    "svm": {
+      "accuracy": {
+        "mean": 0.9906964294049796,
+        "std": 0.000736713400974844
+      },
+      "precision": {
+        "mean": 0.9893397721533722,
+        "std": 0.0015000155076378512
+      },
+      "recall": {
+        "mean": 0.9906873614190687,
+        "std": 0.0005893621880665791
+      },
+      "f1": {
+        "mean": 0.9900124145987492,
+        "std": 0.0007844772688532671
+      },
+      "false_positive_rate": {
+        "mean": 0.00929567159057099,
+        "std": 0.0013241654255204513
+      },
+      "false_negative_rate": {
+        "mean": 0.009312638580931263,
+        "std": 0.000589362188066553
+      }
+    },
+    "kmeans": {
+      "accuracy": {
+        "mean": 0.8536433057997425,
+        "std": 0.023346593355486073
+      },
+      "precision": {
+        "mean": 0.9284077932670408,
+        "std": 0.0040252697916033425
+      },
+      "recall": {
+        "mean": 0.7425891181988742,
+        "std": 0.05095782493936287
+      },
+      "f1": {
+        "mean": 0.8242877184957557,
+        "std": 0.033911867885340986
+      },
+      "false_positive_rate": {
+        "mean": 0.04967110563294393,
+        "std": 0.0013477933462534685
+      },
+      "false_negative_rate": {
+        "mean": 0.2574108818011257,
+        "std": 0.05095782493936286
+      }
+    }
+  },
+  "best_model": {
+    "name": "neural_network",
+    "selected_by": "test-set F1",
+    "file": "models/best_model.joblib"
+  },
+  "total_run_seconds": 517.2
+}
